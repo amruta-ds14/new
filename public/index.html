@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENIGMA | Technical Club</title>
+<style>
+:root{--bg:#050817;--panel:#0b1228;--panel2:#101a36;--text:#eef3ff;--muted:#9ca9c7;--a:#5b5cff;--b:#9b5cff;--line:#1c2a4d}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 80% 10%,#151c55 0,#050817 35%),var(--bg);color:var(--text);line-height:1.6}
+a{text-decoration:none;color:inherit}.container{width:min(1120px,92%);margin:auto}
+nav{position:sticky;top:0;z-index:20;background:rgba(5,8,23,.88);backdrop-filter:blur(15px);border-bottom:1px solid var(--line)}
+.navin{height:72px;display:flex;align-items:center;justify-content:space-between}.logo{font-size:22px;font-weight:800;letter-spacing:1px;display:flex;gap:10px;align-items:center}
+.logo span{width:34px;height:34px;border:2px solid #6c72ff;border-radius:10px;display:grid;place-items:center;color:#9e7cff}
+.links{display:flex;gap:22px;color:#c7d0e7;font-size:14px}.links a:hover{color:#fff}
+.btn{border:0;border-radius:10px;padding:11px 17px;color:#fff;background:linear-gradient(100deg,var(--a),var(--b));font-weight:700;cursor:pointer;display:inline-block;box-shadow:0 8px 25px #554cff2c}.btn.alt{background:transparent;border:1px solid #34446e}
+.hero{min-height:650px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px}
+.kicker{color:#8c91ff;font-weight:700;letter-spacing:2px;text-transform:uppercase}.hero h1{font-size:clamp(42px,6vw,72px);line-height:1.03;margin:15px 0}.grad{background:linear-gradient(90deg,#fff,#6e71ff,#b06cff);-webkit-background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:600px;font-size:18px}.actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.orb{height:360px;border-radius:40px;background:linear-gradient(145deg,#111b45aa,#080d22);border:1px solid #263762;display:grid;place-items:center;position:relative;overflow:hidden}
+.orb:before,.orb:after{content:"";position:absolute;border-radius:50%;filter:blur(2px)}.orb:before{width:230px;height:230px;border:2px solid #5e67ff;box-shadow:0 0 70px #5960ff55}.orb:after{width:120px;height:120px;background:linear-gradient(135deg,#5862ff,#a455ff);box-shadow:0 0 90px #7258ff}
+.enigma-mark{z-index:2;font-size:65px;font-weight:900}
+section{padding:85px 0}.sectionhead{margin-bottom:32px}.sectionhead h2{font-size:36px}.sectionhead p{color:var(--muted);margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:linear-gradient(145deg,#0c142d,#091024);border:1px solid var(--line);border-radius:16px;padding:22px}.card:hover{transform:translateY(-3px);border-color:#4855a0;transition:.2s}.card a.btn{color:#fff}.discussion-item small{display:block;margin-top:10px}.tag{display:inline-block;font-size:12px;color:#aeb4ff;background:#24275c;border-radius:20px;padding:4px 9px;margin-bottom:12px}.card h3{margin-bottom:7px}.muted{color:var(--muted);font-size:14px}.date{font-size:25px;font-weight:800;color:#8e91ff}.card .btn{margin-top:15px;font-size:13px;padding:8px 12px}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.feature{text-align:center;padding:25px}.icon{font-size:28px;margin-bottom:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:start}.list{display:grid;gap:12px}.list div{padding:15px;border:1px solid var(--line);border-radius:12px;background:#0a1125}.search{width:100%;padding:14px 16px;border-radius:11px;border:1px solid #29385f;background:#080e20;color:#fff;margin-bottom:18px;outline:none}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.filter{background:#0b132a;border:1px solid #26365d;color:#bdc7df;padding:7px 12px;border-radius:20px;cursor:pointer}.filter.active{background:#5c5fff;color:#fff}
+.form{display:grid;gap:13px}.form input,.form select,.form textarea{width:100%;padding:13px;border:1px solid #29385f;border-radius:10px;background:#070d20;color:#fff}.form textarea{min-height:110px;resize:vertical}
+.notice{padding:18px;border-left:3px solid #7376ff;background:#0b1329;border-radius:10px;margin-bottom:12px}.success{display:none;margin-top:12px;padding:12px;border-radius:9px;background:#113b2c;color:#a8f2ca}
+footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted)}footer .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.mobile{display:none}
+@media(max-width:800px){.links{display:none}.mobile{display:block}.hero{grid-template-columns:1fr;padding-top:40px}.orb{height:260px}.grid{grid-template-columns:1fr}.features{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}}
+@media(max-width:480px){.features{grid-template-columns:1fr}.hero h1{font-size:45px}}
+
+.authbar{display:flex;align-items:center;gap:10px}.user-pill{padding:8px 12px;border:1px solid var(--line);border-radius:20px;color:#dbe2ff;font-size:13px}.modal{position:fixed;inset:0;background:#02040bcc;display:none;align-items:center;justify-content:center;z-index:100;padding:20px}.modal.show{display:flex}.modalbox{width:min(440px,100%);background:#0b1228;border:1px solid #29385f;border-radius:18px;padding:26px;box-shadow:0 25px 80px #0008}.modalbox h2{margin-bottom:6px}.close{float:right;background:none;border:0;color:#9ca9c7;font-size:25px;cursor:pointer}.tabs{display:flex;gap:8px;margin:18px 0}.tabs button{flex:1;padding:10px;border-radius:9px;border:1px solid #29385f;background:#080e20;color:#cbd4ee;cursor:pointer}.tabs button.active{background:#5b5cff;color:white}.authmsg{display:none;padding:10px;border-radius:8px;margin-top:10px;font-size:13px}.authmsg.error{display:block;background:#3b1720;color:#ffb9c5}.authmsg.ok{display:block;background:#113b2c;color:#a8f2ca}.profilebox{display:none;margin-top:20px}.profilebox.show{display:block}.profilecard{padding:16px;border:1px solid var(--line);border-radius:12px;background:#080e20}.mobileAuth{display:none}@media(max-width:800px){.authbar{display:none}.mobileAuth{display:block}}
+</style>
+</head>
+<body>
+<nav><div class="container navin">
+<a href="#home" class="logo"><span>⌬</span> ENIGMA</a>
+<div class="links">
+<a href="#about">About</a><a href="#events">Events</a><a href="#projects">Projects</a><a href="#resources">Resources</a><a href="#discussion">Discussion</a><a href="#team">Team</a><a href="#join">Join</a>
+</div><div class="authbar"><span id="userPill" class="user-pill" style="display:none"></span><button id="loginBtn" class="btn">Login / Sign Up</button><button id="logoutBtn" class="btn alt" style="display:none">Logout</button></div><button id="mobileLoginBtn" class="btn mobileAuth">Login</button>
+</div></nav>
+
+<main>
+<section id="home"><div class="container hero">
+<div><div class="kicker">Technical Club • Learn • Build • Innovate</div>
+<h1>Turn <span class="grad">curiosity</span><br>into technology.</h1>
+<p>ENIGMA is a student technical club where curious minds learn together, build practical projects, participate in events and create solutions that matter.</p>
+<div class="actions"><a class="btn" href="#events">Explore Events →</a><a class="btn alt" href="#projects">View Projects</a></div></div>
+<div class="orb"><div class="enigma-mark">E</div></div>
+</div></section>
+
+<section id="about"><div class="container">
+<div class="sectionhead"><h2>About ENIGMA</h2><p>A community of students building a better tomorrow through technology.</p></div>
+<div class="two"><div class="card"><h3>Our Vision</h3><p class="muted">Create a platform where students can explore, learn and build innovative solutions while developing confidence and teamwork.</p></div>
+<div class="card"><h3>Our Mission</h3><div class="list"><div>💻 Hands-on technical learning</div><div>🤝 Teamwork and peer learning</div><div>🚀 Real-world project experience</div><div>🏆 Hackathons, workshops and competitions</div></div></div></div>
+</div></section>
+
+<section id="events"><div class="container">
+<div class="sectionhead"><h2>Upcoming Events</h2><p>Learn something new. Meet builders. Show your skills.</p></div>
+<input id="eventSearch" class="search" placeholder="Search events...">
+<div class="filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="coding">Coding</button><button class="filter" data-filter="ai">AI/ML</button><button class="filter" data-filter="web">Web</button><button class="filter" data-filter="hackathon">Hackathon</button></div>
+<div id="eventGrid" class="grid">
+<div class="card event" data-type="hackathon" data-name="Hackathon 2.0"><div class="date">12 OCT</div><span class="tag">Hackathon</span><h3>Hackathon 2.0</h3><p class="muted">Build innovative solutions with your team and compete with the best minds.</p><button class="btn register" data-event="Hackathon 2.0">Register Now</button></div>
+<div class="card event" data-type="coding" data-name="Python Workshop"><div class="date">18 OCT</div><span class="tag">Coding</span><h3>Python Workshop</h3><p class="muted">Learn Python from scratch through hands-on exercises.</p><button class="btn register" data-event="Python Workshop">Register Now</button></div>
+<div class="card event" data-type="web" data-name="Web Development Bootcamp"><div class="date">25 OCT</div><span class="tag">Web</span><h3>Web Development Bootcamp</h3><p class="muted">Build your own website using modern web technologies.</p><button class="btn register" data-event="Web Development Bootcamp">Register Now</button></div>
+</div></div></section>
+
+<section id="projects"><div class="container">
+<div class="sectionhead"><h2>Student Projects</h2><p>Practical ideas built by ENIGMA members.</p></div>
+<div class="grid"><div class="card"><span class="tag">IoT</span><h3>Smart Waste Management</h3><p class="muted">A concept for monitoring waste bins and improving collection efficiency.</p></div><div class="card"><span class="tag">AI</span><h3>HealthCare Assistant</h3><p class="muted">A student-built concept exploring AI-assisted health information.</p></div><div class="card"><span class="tag">Web</span><h3>Campus Parking System</h3><p class="muted">A simple web platform for organizing campus parking information.</p></div></div>
+</div></section>
+
+<section id="resources"><div class="container">
+<div class="sectionhead"><h2>Student Resource Hub</h2><p>Find notes, tutorials, roadmaps and useful links quickly.</p><div id="resourceAuthNotice" class="notice" style="margin-top:14px">🔒 Please log in to access student resources.</div></div>
+<input id="resourceSearch" class="search" placeholder="Search resources, topics or skills...">
+<div class="filters" id="resourceFilters">
+<button class="filter active" data-rfilter="all">All</button>
+<button class="filter" data-rfilter="coding">Coding</button>
+<button class="filter" data-rfilter="web">Web</button>
+<button class="filter" data-rfilter="ai">AI/ML</button>
+<button class="filter" data-rfilter="college">College</button>
+</div>
+<div id="resourceGrid" class="grid">
+<div class="card resource" data-type="coding" data-name="Python Basics">
+<span class="tag">Coding</span><h3>🐍 Python Basics</h3>
+<p class="muted">Beginner notes, practice ideas and syntax references.</p>
+<a class="btn" href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">Open Resource ↗</a>
+</div>
+<div class="card resource" data-type="web" data-name="Web Development Roadmap">
+<span class="tag">Web</span><h3>🌐 Web Development Roadmap</h3>
+<p class="muted">A simple path from HTML and CSS to JavaScript and projects.</p>
+<a class="btn" href="https://developer.mozilla.org/en-US/docs/Learn" target="_blank" rel="noopener">Open Resource ↗</a>
+</div>
+<div class="card resource" data-type="ai" data-name="Machine Learning Basics">
+<span class="tag">AI/ML</span><h3>🤖 Machine Learning Basics</h3>
+<p class="muted">Start with concepts, datasets and beginner-friendly examples.</p>
+<a class="btn" href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Open Resource ↗</a>
+</div>
+<div class="card resource" data-type="college" data-name="DSA Practice">
+<span class="tag">College</span><h3>🧠 DSA Practice</h3>
+<p class="muted">Practice problems to improve logic and prepare for coding rounds.</p>
+<a class="btn" href="https://leetcode.com/problemset/" target="_blank" rel="noopener">Practice ↗</a>
+</div>
+<div class="card resource" data-type="college" data-name="Student Notes">
+<span class="tag">College</span><h3>📚 Student Notes</h3>
+<p class="muted">Add your ENIGMA's verified unit notes, lab manuals and study material here.</p>
+<button class="btn" onclick="alert('This button is ready to connect to your college notes folder or cloud storage.')">Open Notes</button>
+</div>
+<div class="card resource" data-type="coding" data-name="Project Ideas">
+<span class="tag">Coding</span><h3>💡 Project Ideas</h3>
+<p class="muted">Small project ideas for beginners who want to build their portfolio.</p>
+<button class="btn" onclick="document.getElementById('projects').scrollIntoView()">View Projects</button>
+</div>
+</div>
+</div></section>
+
+<section id="discussion"><div class="container">
+<div class="sectionhead"><h2>Team Discussion</h2><p>A simple space for ENIGMA members to share ideas, ask questions and coordinate projects.</p></div>
+<div class="two">
+<div>
+<div class="card" style="margin-bottom:15px">
+<h3>Start a discussion</h3>
+<form id="discussionForm" class="form" style="margin-top:15px">
+<input id="postName" placeholder="Your name (optional)">
+<input id="postTitle" required placeholder="Discussion title">
+<select id="postTopic" required>
+<option value="">Choose topic</option><option>Project</option><option>Event</option><option>Coding Help</option><option>Resources</option><option>General</option>
+</select>
+<textarea id="postMessage" required placeholder="Write your question, idea or update..."></textarea>
+<button class="btn" type="submit">Post Discussion</button>
+</form></div>
+<div class="notice"><strong>Tip:</strong> Keep discussions respectful and useful. Do not share passwords or private information.</div>
+</div>
+<div>
+<h3 style="margin-bottom:12px">Recent Discussions</h3>
+<div id="discussionList" class="list">
+<div class="card discussion-item"><span class="tag">Project</span><h3>Ideas for our next project?</h3><p class="muted">Let's share beginner-friendly project ideas that a small team can build this semester.</p><small class="muted">Posted by ENIGMA Team</small></div>
+<div class="card discussion-item"><span class="tag">Event</span><h3>Workshop topic suggestions</h3><p class="muted">Which technical topic should we cover in the next workshop?</p><small class="muted">Posted by Club Lead</small></div>
+</div>
+</div>
+</div>
+</div></section>
+<section id="team"><div class="container"><div class="sectionhead"><h2>Meet the Team</h2><p>The people who make ENIGMA happen.</p></div>
+<div class="grid"><div class="card"><h3>Faculty Coordinator</h3><p class="muted">Dr. Your Faculty Name</p></div><div class="card"><h3>Club Lead</h3><p class="muted">Your Name</p></div><div class="card"><h3>Technical Lead</h3><p class="muted">Member Name</p></div></div></div></section>
+
+<section id="join"><div class="container"><div class="sectionhead"><h2>Join ENIGMA</h2><p>Bring your curiosity. We'll help you build the skills.</p></div>
+<div class="two"><div><h3>Why join?</h3><div class="list" style="margin-top:15px"><div>✓ Access workshops and events</div><div>✓ Work on real-world projects</div><div>✓ Meet like-minded students</div><div>✓ Build your portfolio</div></div></div>
+<form id="joinForm" class="card form"><input id="name" required placeholder="Full name"><input id="email" type="email" required placeholder="Email address"><select id="year" required><option value="">Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select><input id="interest" required placeholder="Technical interest (e.g. AI, Web, Coding)"><textarea placeholder="Why do you want to join?"></textarea><button class="btn" type="submit">Submit Application</button><div id="joinSuccess" class="success">Application submitted successfully! Welcome to ENIGMA. 🎉</div></form></div></div></section>
+
+<div id="authModal" class="modal"><div class="modalbox"><button class="close" id="closeAuth">×</button><h2 id="authTitle">Welcome to ENIGMA</h2><p class="muted">Create an account or login to access student features.</p><div class="tabs"><button id="loginTab" class="active">Login</button><button id="signupTab">Sign Up</button></div><form id="loginForm" class="form"><input id="loginEmail" type="email" required placeholder="Email address"><input id="loginPassword" type="password" required placeholder="Password"><button class="btn" type="submit">Login</button></form><form id="signupForm" class="form" style="display:none"><input id="signupName" required placeholder="Full name"><input id="signupEmail" type="email" required placeholder="Email address"><input id="signupPassword" type="password" minlength="6" required placeholder="Password (minimum 6 characters)"><input id="signupConfirm" type="password" required placeholder="Confirm password"><button class="btn" type="submit">Create Account</button></form><div style="margin-top:14px;text-align:center"><button id="forgotBtn" style="background:none;border:0;color:#9e9fff;cursor:pointer">Forgot Password?</button></div><div id="authMsg" class="authmsg"></div><div id="profilebox" class="profilebox"><div class="profilecard"><strong>Signed in</strong><p id="profileName" class="muted"></p><p id="profileEmail" class="muted"></p></div></div></div></div>
+</main>
+
+<footer><div class="container foot"><div><strong style="color:#fff">⌬ ENIGMA</strong><br>Technical Club • Learn • Build • Innovate</div><div>© 2026 ENIGMA • Student Technical Club</div></div></footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+let supabaseClient;
+async function initSupabase(){
+  const r=await fetch('/api/config');
+  const cfg=await r.json();
+  if(!r.ok) throw new Error(cfg.message||'Supabase configuration missing.');
+  supabaseClient=window.supabase.createClient(cfg.url,cfg.key);
+}
+
+const authModal=document.getElementById('authModal');
+const loginBtn=document.getElementById('loginBtn');
+const mobileLoginBtn=document.getElementById('mobileLoginBtn');
+const closeAuth=document.getElementById('closeAuth');
+const logoutBtn=document.getElementById('logoutBtn');
+const userPill=document.getElementById('userPill');
+const loginTab=document.getElementById('loginTab');
+const signupTab=document.getElementById('signupTab');
+const loginForm=document.getElementById('loginForm');
+const signupForm=document.getElementById('signupForm');
+const authMsg=document.getElementById('authMsg');
+const profilebox=document.getElementById('profilebox');
+const resourceNotice=document.getElementById('resourceAuthNotice');
+
+function showAuth(){authModal.classList.add('show');setMsg('','')}
+function hideAuth(){authModal.classList.remove('show')}
+function setMsg(t,type){authMsg.textContent=t;authMsg.className='authmsg'+(type?' '+type:'')}
+function setTab(tab){const login=tab==='login';loginTab.classList.toggle('active',login);signupTab.classList.toggle('active',!login);loginForm.style.display=login?'grid':'none';signupForm.style.display=login?'none':'grid';document.getElementById('forgotBtn').style.display=login?'block':'none';setMsg('','')}
+loginBtn.onclick=showAuth;mobileLoginBtn.onclick=showAuth;closeAuth.onclick=hideAuth;authModal.onclick=e=>{if(e.target===authModal)hideAuth()};loginTab.onclick=()=>setTab('login');signupTab.onclick=()=>setTab('signup');
+
+async function currentUser(){
+  const {data:{user}}=await supabaseClient.auth.getUser();
+  return user;
+}
+async function refreshUser(){
+  try{
+    const user=await currentUser();
+    if(user){
+      const {data:profile}=await supabaseClient.from('profiles').select('full_name,email').eq('id',user.id).maybeSingle();
+      const name=profile?.full_name||user.user_metadata?.full_name||user.email?.split('@')[0]||'Student';
+      const email=profile?.email||user.email||'';
+      userPill.textContent='Hi, '+name;userPill.style.display='inline-block';loginBtn.style.display='none';logoutBtn.style.display='inline-block';mobileLoginBtn.style.display='none';resourceNotice.style.display='none';profilebox.classList.add('show');
+      document.getElementById('profileName').textContent='Name: '+name;document.getElementById('profileEmail').textContent='Email: '+email;
+      document.getElementById('name').value=name;document.getElementById('email').value=email;
+    }else{throw new Error()}
+  }catch(e){userPill.style.display='none';loginBtn.style.display='inline-block';logoutBtn.style.display='none';mobileLoginBtn.style.display='block';resourceNotice.style.display='block';profilebox.classList.remove('show')}
+}
+
+loginForm.onsubmit=async e=>{e.preventDefault();setMsg('Logging in...','');try{const {error}=await supabaseClient.auth.signInWithPassword({email:loginEmail.value.trim(),password:loginPassword.value});if(error)throw error;setMsg('Login successful!','ok');await refreshUser();setTimeout(hideAuth,500)}catch(err){setMsg(err.message||'Login failed.','error')}};
+signupForm.onsubmit=async e=>{e.preventDefault();if(signupPassword.value!==signupConfirm.value){setMsg('Passwords do not match.','error');return}setMsg('Creating account...','');try{const {data,error}=await supabaseClient.auth.signUp({email:signupEmail.value.trim(),password:signupPassword.value,options:{data:{full_name:signupName.value.trim()},emailRedirectTo:window.location.origin}});if(error)throw error;if(data.session){setMsg('Account created successfully!','ok');await refreshUser();setTimeout(hideAuth,700)}else{setMsg('Account created. Check your email to confirm your account, then log in.','ok')}}catch(err){setMsg(err.message||'Could not create account.','error')}};
+logoutBtn.onclick=async()=>{await supabaseClient.auth.signOut();await refreshUser()};
+document.getElementById('forgotBtn').onclick=async()=>{const email=loginEmail.value.trim();if(!email){setMsg('Enter your email first.','error');return}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});if(error)throw error;setMsg('Password reset email sent. Check your inbox.','ok')}catch(err){setMsg(err.message||'Could not send reset email.','error')}};
+
+const filters=document.querySelectorAll('.filter'), events=document.querySelectorAll('.event'), search=document.getElementById('eventSearch');
+let active='all';
+function filterEvents(){const q=search.value.toLowerCase();events.forEach(e=>{const ok=(active==='all'||e.dataset.type===active)&&e.dataset.name.toLowerCase().includes(q);e.style.display=ok?'block':'none'})}
+filters.forEach(f=>f.onclick=()=>{filters.forEach(x=>x.classList.remove('active'));f.classList.add('active');active=f.dataset.filter;filterEvents()});search.oninput=filterEvents;
+
+document.querySelectorAll('.register').forEach(b=>b.onclick=async()=>{
+ try{const user=await currentUser();if(!user){showAuth();return}const eventName=b.dataset.event;const map={'Hackathon 2.0':'hackathon-2','Python Workshop':'python-workshop','Web Development Bootcamp':'web-bootcamp'};const {error}=await supabaseClient.from('event_registrations').insert({user_id:user.id,event_id:map[eventName],event_name:eventName});if(error){if(error.code==='23505')alert('You are already registered for this event.');else throw error}else alert('Registered for '+eventName+'!');}
+ catch(err){alert(err.message||'Could not register.')}});
+
+const resourceSearch=document.getElementById('resourceSearch');
+const resourceFilters=document.querySelectorAll('#resourceFilters .filter');
+const resources=document.querySelectorAll('.resource');
+let activeResource='all';
+function filterResources(){const q=(resourceSearch.value||'').toLowerCase();resources.forEach(r=>{const ok=(activeResource==='all'||r.dataset.type===activeResource)&&r.dataset.name.toLowerCase().includes(q);r.style.display=ok?'block':'none'})}
+resourceFilters.forEach(f=>f.onclick=()=>{resourceFilters.forEach(x=>x.classList.remove('active'));f.classList.add('active');activeResource=f.dataset.rfilter;filterResources()});resourceSearch.oninput=filterResources;
+
+const discussionForm=document.getElementById('discussionForm');
+const discussionList=document.getElementById('discussionList');
+function renderDiscussions(items){
+ discussionList.innerHTML='';
+ items.forEach(x=>{const card=document.createElement('div');card.className='card discussion-item';
+ card.innerHTML='<span class="tag"></span><h3></h3><p class="muted"></p><small class="muted"></small><button class="btn alt delete-disc" style="display:none">Delete</button>';
+ card.querySelector('.tag').textContent=x.topic;card.querySelector('h3').textContent=x.title;card.querySelector('p').textContent=x.message;
+ card.querySelector('small').textContent='Posted by '+(x.author_name||'Student')+' • '+new Date(x.created_at).toLocaleString();
+ const del=card.querySelector('.delete-disc');del.style.display=(window.currentUserId===x.user_id)?'inline-block':'none';
+ del.onclick=async()=>{try{const {error}=await supabaseClient.from('discussions').delete().eq('id',x.id);if(error)throw error;loadDiscussions()}catch(e){alert(e.message)}};
+ discussionList.appendChild(card);});
+}
+async function loadDiscussions(){try{const {data,error}=await supabaseClient.from('discussions').select('id,user_id,title,topic,message,author_name,created_at').order('created_at',{ascending:false});if(error)throw error;const items=(data||[]).map(x=>({...x,author_name:x.author_name||'Student'}));renderDiscussions(items)}catch(e){console.warn('Discussion load:',e.message)}}
+discussionForm.onsubmit=async e=>{e.preventDefault();try{const user=await currentUser();if(!user){showAuth();return}const {data:profile}=await supabaseClient.from('profiles').select('full_name').eq('id',user.id).maybeSingle();const {error}=await supabaseClient.from('discussions').insert({user_id:user.id,author_name:profile?.full_name||user.user_metadata?.full_name||user.email?.split('@')[0]||'Student',title:postTitle.value.trim(),topic:postTopic.value.trim(),message:postMessage.value.trim()});if(error)throw error;discussionForm.reset();await loadDiscussions();alert('Discussion posted successfully!')}catch(err){alert(err.message||'Could not post discussion.')}};
+
+const joinForm=document.getElementById('joinForm');
+joinForm.onsubmit=async e=>{e.preventDefault();try{const user=await currentUser();if(!user){showAuth();return}const {error}=await supabaseClient.from('join_applications').insert({user_id:user.id,year:year.value,interest:interest.value.trim(),reason:e.target.querySelector('textarea').value.trim()});if(error){if(error.code==='23505')alert('You have already submitted an ENIGMA application.');else throw error}else{document.getElementById('joinSuccess').style.display='block';e.target.reset();await refreshUser()}}catch(err){alert(err.message||'Could not submit application.')}};
+
+async function loadResourcesFromSupabase(){
+  try{
+    const {data,error}=await supabaseClient.from('resources').select('title,category,url,description').order('created_at',{ascending:false});
+    if(error)throw error;
+    if(!data?.length)return;
+    const container=document.querySelector('.resource-grid');
+    if(!container)return;
+    container.innerHTML='';
+    data.forEach(r=>{const a=document.createElement('a');a.className='card resource';a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.type=r.category;a.dataset.name=r.title.toLowerCase();a.innerHTML='<span class="tag"></span><h3></h3><p class="muted"></p>';a.querySelector('.tag').textContent=r.category;a.querySelector('h3').textContent=r.title;a.querySelector('p').textContent=r.description||'Open resource';container.appendChild(a)});
+  }catch(e){console.warn('Resource load:',e.message)}
+}
+
+async function boot(){
+  try{await initSupabase();
+    supabaseClient.auth.onAuthStateChange(async()=>{const u=await currentUser();window.currentUserId=u?.id||null;await refreshUser();await loadDiscussions()});
+    const u=await currentUser();window.currentUserId=u?.id||null;
+    await refreshUser();await loadDiscussions();await loadResourcesFromSupabase();
+  }catch(e){setMsg(e.message||'Could not connect to Supabase.','error');showAuth();console.error(e)}
+}
+boot();
+</script>
+</body>
+</html>
